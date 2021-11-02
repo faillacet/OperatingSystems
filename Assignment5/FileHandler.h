@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 
-struct Table {
+struct LogicalAddress {
     short unsigned int pageNumber;
     short unsigned int pageOffset;
 };
@@ -13,13 +13,14 @@ struct Table {
 class FileHandler {
 private:
     ifstream inFile;
-    Table* tbl;
     int fileLength;
 
     int getFileLength();
     void copyFile();
 
 public:
+    LogicalAddress* logAddr;
+
     FileHandler();
     FileHandler(char* file);
     ~FileHandler();
@@ -28,14 +29,14 @@ public:
 FileHandler::FileHandler(char* file) {
     inFile.open(file);
     fileLength = getFileLength();
-    tbl = new Table[fileLength];
+    logAddr = new LogicalAddress[fileLength];
 
     copyFile();
 
 }
 
 FileHandler::~FileHandler() {
-    delete[] tbl;
+    delete[] logAddr;
     inFile.close();
 }
 
@@ -57,8 +58,8 @@ void FileHandler::copyFile() {
     int x;
     int iterator = 0;
     while (inFile >> x) {
-        tbl[iterator].pageNumber = (x & 0x0000FF00) >> 8;
-        tbl[iterator].pageOffset = (x & 0x000000FF);
+        logAddr[iterator].pageNumber = (x & 0x0000FF00) >> 8;
+        logAddr[iterator].pageOffset = (x & 0x000000FF);
         iterator++;
     }
 }

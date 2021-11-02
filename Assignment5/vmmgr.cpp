@@ -1,4 +1,5 @@
 #include "FileHandler.h"
+#include "PageTable.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) { 
@@ -6,7 +7,8 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    FileHandler fileHandler(argv[1]);
-
+    FileHandler addressHandler(argv[1]);
+    PageTable pageTable;
+  
     exit(EXIT_SUCCESS);
 }
