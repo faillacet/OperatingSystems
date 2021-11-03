@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
     short unsigned int tempAddr;
     char memValue;
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < addressHandler.getFileLength(); i++)
     {
         tempAddr = (addressHandler.logAddr[i].pageNumber << 8) + addressHandler.logAddr[i].pageOffset;
         cout << "Logical address: " << dec << tempAddr << endl;
