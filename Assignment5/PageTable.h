@@ -16,10 +16,11 @@ struct PageLookup {
 class PageTable {
 private:
     FILE* fPtr;
+    PageLookup* pageLookup;
     short unsigned int entries = 256;
     short unsigned int pageSize = 256; //bytes
-    PageLookup* pageLookup;
     const char* backingFile = "BACKING_STORE.bin";
+    unsigned int pageFault = 0;
 
     void readPage(short unsigned int page);
 
@@ -28,6 +29,7 @@ public:
     ~PageTable();
     short unsigned int getFrameNumber(short unsigned int pageNum);
     char getValueAtAddress(short unsigned int addr, short unsigned int offset);
+    unsigned int getPageFaultCount();
 };
 
 PageTable::PageTable() {
@@ -48,6 +50,7 @@ short unsigned int PageTable::getFrameNumber(short unsigned int pageNum) {
         readPage(pageNum);
         pageLookup[pageNum].valid = true;
         pageLookup[pageNum].physicalPage = pageNum;
+        pageFault++;
         return pageLookup[pageNum].physicalPage;
     }
 }
@@ -60,6 +63,10 @@ void PageTable::readPage(short unsigned int page) {
 
 char PageTable::getValueAtAddress(short unsigned int frame, short unsigned int offset) {
     return physicalMemory[frame][offset];
+}
+
+unsigned int PageTable::getPageFaultCount() {
+    return pageFault;
 }
 
 #endif // PAGETABLE_H
