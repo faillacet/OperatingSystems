@@ -15,7 +15,7 @@ private:
     ifstream inFile;
     int fileLength;
 
-    int getFileLength();
+    int calcFileLength();
     void copyFile();
 
 public:
@@ -24,15 +24,19 @@ public:
     FileHandler();
     FileHandler(char* file);
     ~FileHandler();
+    int getFileLength();
 };
 
 FileHandler::FileHandler(char* file) {
     inFile.open(file);
-    fileLength = getFileLength();
+    if (inFile.fail()) {
+        perror("Unable to open file...");
+        exit(EXIT_FAILURE);
+    }
+    fileLength = calcFileLength();
     logAddr = new LogicalAddress[fileLength];
 
     copyFile();
-
 }
 
 FileHandler::~FileHandler() {
@@ -40,7 +44,7 @@ FileHandler::~FileHandler() {
     inFile.close();
 }
 
-int FileHandler::getFileLength() {
+int FileHandler::calcFileLength() {
     string s;
     int count = 0;
     while(!inFile.eof()) {
@@ -62,6 +66,10 @@ void FileHandler::copyFile() {
         logAddr[iterator].pageOffset = (x & 0x000000FF);
         iterator++;
     }
+}
+
+int FileHandler::getFileLength() {
+    return fileLength;
 }
 
 #endif // FILEHANDLER_H

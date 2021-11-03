@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     
     // Display Page Faults via PageTable
     cout << "Amount of Page Faults: " << dec << pageTable.getPageFaultCount() << endl;
-    cout << "Page Fault Rate: " <<  ((float)pageTable.getPageFaultCount() / 1000.0) * 100  << "%" << endl;
+    cout << "Page Fault Rate: " <<  ((float)pageTable.getPageFaultCount() / (float)addressHandler.getFileLength()) * 100  << "%" << endl;
     
     exit(EXIT_SUCCESS);
 }
