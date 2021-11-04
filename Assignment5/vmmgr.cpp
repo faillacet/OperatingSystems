@@ -2,6 +2,8 @@
 #include "PageTable.h"
 #include "TLB.h"
 
+#include <stdio.h>
+
 int main(int argc, char* argv[]) {
     if (argc != 2) { 
         cout << "Incorrect arguments..." << endl;
@@ -13,7 +15,7 @@ int main(int argc, char* argv[]) {
     TLB tlb;
 
     short unsigned int tempAddr;
-    char memValue;
+    unsigned char memValue;
     for (int i = 0; i < addressHandler.getFileLength(); i++)
     {
         tempAddr = (addressHandler.logAddr[i].pageNumber << 8) + addressHandler.logAddr[i].pageOffset;
@@ -28,7 +30,7 @@ int main(int argc, char* argv[]) {
 
             // Get value stored in mem at that location
             memValue = physicalMemory[addressHandler.logAddr[i].pageNumber][addressHandler.logAddr[i].pageOffset];
-            cout << "Value at Physical Address (Unsigned Char): " << dec << (unsigned int)memValue << endl << endl;
+            cout << "Value at Physical Address: " << dec << (unsigned)memValue << endl << endl;
         }
         else {
             // Translate logical to physical via PageTable - loads into mem if not there
@@ -38,7 +40,7 @@ int main(int argc, char* argv[]) {
 
             // Get the value stored in mem at that location
             memValue = pageTable.getValueAtAddress((tempAddr >> 8), addressHandler.logAddr[i].pageOffset);
-            cout << "Value at Physical Address (Unsigned Char): " << dec << (unsigned short)memValue << endl << endl;
+            cout << "Value at Physical Address: " << dec << (unsigned)memValue << endl << endl;
 
             // Push to TLB
             tlb.addElement(addressHandler.logAddr[i].pageNumber);
