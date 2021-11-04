@@ -41,7 +41,8 @@ int main(int argc, char* argv[]) {
 
             // Get the value stored in mem at that location
             memValue = pageTable.getValueAtAddress((tempAddr >> 8), addressHandler.logAddr[i].pageOffset);
-            cout << "Value at Physical Address: " << bitset<8>(memValue) << endl << endl;
+            cout << "Value at Physical Address in Binary: " << bitset<8>(memValue) << endl;
+            cout << "Value at Physical Address as Char: " << (char)memValue << endl << endl;
 
             // Push to TLB
             tlb.addElement(addressHandler.logAddr[i].pageNumber);
@@ -50,9 +51,10 @@ int main(int argc, char* argv[]) {
     
     // Display Page Faults
     cout << "Amount of Page Faults: " << dec << pageTable.getPageFaultCount() << endl;
-    cout << "Page Fault Rate: " <<  ((float)pageTable.getPageFaultCount() / (float)addressHandler.getFileLength()) * 100  << "%" << endl;
+    cout << "Page Fault Rate: " <<  ((float)pageTable.getPageFaultCount() / (float)addressHandler.getFileLength()) * 100  << "%" << endl << endl;
     
     // Display TBL hit rate
+    cout << "TBL algorithm used: FIFO" << endl;
     cout << "Amount of TLB hits: " << tlb.hitCount << endl;
     cout << "TBL Hit rate: " << ((float)tlb.hitCount / (float)(tlb.hitCount+tlb.missCount)) * 100 << "%" << endl;
 
