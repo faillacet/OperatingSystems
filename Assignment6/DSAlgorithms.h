@@ -17,14 +17,8 @@ public:
 int DSAlgorithms::FCFS(int initPos, int arr[], int arrSize) {
     int counter = 0;
     for (int i = 0; i < arrSize; i++) {
-        if (arr[i] < initPos) {
-            counter += initPos - arr[i];
-            initPos = arr[i];
-        }
-        else if (arr[i] > initPos) {
-            counter += arr[i] - initPos;
-            initPos = arr[i];
-        }
+        counter += abs(initPos - arr[i]);
+        initPos = arr[i];
     }
     return counter;
 }
