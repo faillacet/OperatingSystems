@@ -1,0 +1,36 @@
+Trenton Faillace
+
+ls -li file1.txt
+
+Output: 89920 -rw-r--r-- 1 faillace faillace 33 Dec  8 10:34 file1.txt
+
+ln file1.txt file2.txt
+
+Output: file2.txt is created
+
+file1.txt output: 89920 -rw-r--r-- 2 faillace faillace 33 Dec  8 10:34 file1.txt
+file2.txt output: 89920 -rw-r--r-- 2 faillace faillace 33 Dec  8 10:34 file2.txt
+
+The inode value of file1.txt and file2.txt are the same, they also have the same contents.
+
+Once I edited the contents of file2.txt, file1.txt had the exact same changes.  The content of these two files are the same.
+
+rm file1.txt
+After this command, file2.txt still exists.
+
+strace rm file2.txt
+
+unlinkat(AT_FDCWD, "file2.txt", 0)      = 0
+The unlinkat() system call is used to remove file2.txt
+
+ln -s file3.txt file4.txt
+
+ls -li file3.txt : 89921 -rw-r--r-- 1 faillace faillace 34 Dec  8 10:34 file3.txt
+ls -li file4.txt : 89920 lrwxrwxrwx 1 faillace faillace 9 Dec  8 10:44 file4.txt -> file3.txt
+
+The inodes differ for each file.
+After editing file4.txt, the same edits are made to file3.txt.
+
+rm file3.txt
+
+After deleting file3.txt and then making an edit to file4.txt, file3.txt is recreated and has the same contents as file4.txt.
